@@ -7,8 +7,7 @@ Author URI: http://www.huitheme.com
 Version: 1.6.202301041836
 */
 @charset "UTF-8";
-@font-face{font-family:'OPPOSans2';src:url(https://www.oppo.com/etc.clientlibs/global-site/clientlibs/ui.frontend/clientlib-design/resources/fonts/OPPOSansWeb2.woff2) format("woff2"),url(https://www.oppo.com/etc.clientlibs/global-site/clientlibs/ui.frontend/clientlib-design/resources/fonts/OPPOSansWeb2.woff) format("woff"),url(https://www.oppo.com/etc.clientlibs/global-site/clientlibs/ui.frontend/clientlib-design/resources/fonts/OPPOSansWeb2.ttf) format("truetype"),url(https://www.oppo.com/etc.clientlibs/global-site/clientlibs/ui.frontend/clientlib-design/resources/fonts/OPPOSansWeb2.eot) format("embedded-opentype");font-weight:400;font-style:normal;font-display:swap}
-body{font-family:'OPPOSans2';color:#333;font-size:14px;background-color:#f7f7f7;background-image:var(--ds_background);background-attachment:fixed;}
+body{font-family:PingFang SC,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif;color:#333;font-size:14px;background-color:#f7f7f7;background-image:var(--ds_background);background-attachment:fixed;}
 p{margin-top:0;margin-bottom:10px;}
 ol,
 ul,

@@ -7,6 +7,7 @@ add_filter( 'use_widgets_block_editor', '__return_false' );
 //禁用默认自带小工具
 function huitheme_unregisterWidgets() {
     unregister_widget( 'WP_Widget_Archives' );          //年份文章归档
+    unregister_widget( 'WP_Widget_Block' );             //区块
     unregister_widget( 'WP_Widget_Calendar' );          //日历
     unregister_widget( 'WP_Widget_Categories' );        //分类列表
     unregister_widget( 'WP_Widget_Links' );             //链接

@@ -91,139 +91,90 @@ $author_url = 'aHR0cHM6Ly93d3cuaHVpdGhlbWUuY29tLw==';
 add_action('the_post', 'huitheme_auto_set_featured_image');
 
 
-/** ////////////////裁剪核心 2022-08-28//////////////// **/
+// 裁剪 2024-01-01 更新 php7.4 - php8.2 极致优化
 
 class Thumbnails {
-
     public function __construct() {
-        add_action('init', array($this, 'init'));
+        add_action('init', [$this, 'init']);
     }
-
-    function init() {
-
-        add_filter('image_resize_dimensions', array($this, 'image_resize_dimensions'), 10, 6);  //图片太小放大裁剪
-        add_filter('image_downsize', array($this, 'image_downsize'), 10, 3);                    //开启自动裁剪
-
+    public function init() {
+        add_filter('image_resize_dimensions', [$this, 'imageResizeDimensions'], 10, 6);
+        add_filter('image_downsize', [$this, 'imageDownsize'], 10, 3);
     }
-
-
-    /** 图片太小放大裁剪 */
-
-    function image_resize_dimensions($preempt, $orig_w, $orig_h, $new_w, $new_h, $crop) {
+    public function imageResizeDimensions($preempt, int $origW, int $origH, int $newW, int $newH, $crop) {
         if (!$crop) {
             return null;
         }
-        if (!is_array($crop)) {
-            $crop = array('center', 'center');  //水平和上下
+        $crop = is_array($crop) ? $crop : ['center', 'center'];
+        $sizeRatio = max($newW / $origW, $newH / $origH);
+        $cropW = round($newW / $sizeRatio);
+        $cropH = round($newH / $sizeRatio);
+        [$x, $y] = $crop;
+        switch ($x) {
+            case 'left':
+                $sX = 0;
+                break;
+            case 'right':
+                $sX = $origW - $cropW;
+                break;
+            default:
+                $sX = floor(($origW - $cropW) / 2);
         }
-        $size_ratio = max($new_w / $orig_w, $new_h / $orig_h);
-        $crop_w = round($new_w / $size_ratio);
-        $crop_h = round($new_h / $size_ratio);
-        list( $x, $y ) = $crop;
-        if ('left' === $x) {
-            $s_x = 0;
-        } elseif ('right' === $x) {
-            $s_x = $orig_w - $crop_w;
-        } else {
-            $s_x = floor(( $orig_w - $crop_w ) / 2);
+        switch ($y) {
+            case 'top':
+                $sY = 0;
+                break;
+            case 'bottom':
+                $sY = $origH - $cropH;
+                break;
+            default:
+                $sY = floor(($origH - $cropH) / 2);
         }
-        if ('top' === $y) {
-            $s_y = 0;
-        } elseif ('bottom' === $y) {
-            $s_y = $orig_h - $crop_h;
-        } else {
-            $s_y = floor(( $orig_h - $crop_h ) / 2);
-        }
-        return array(0, 0, (int) $s_x, (int) $s_y, (int) $new_w, (int) $new_h, (int) $crop_w, (int) $crop_h);
+        return [0, 0, (int)$sX, (int)$sY, (int)$newW, (int)$newH, (int)$cropW, (int)$cropH];
     }
-
-
-
-    /** 开始裁剪 */
-
-    function image_downsize($downsize = false, $id, $size ) {
-        if (function_exists('wp_get_additional_image_sizes')) {
-            $sizes = wp_get_additional_image_sizes();
-        } else {
-            global $_wp_additional_image_sizes;
-            $sizes = &$_wp_additional_image_sizes;
+    public function imageDownsize(bool $downsize, int $id, $size = null) {
+        if ($size === 'full') {
+            return false;
         }
+        $sizes = function_exists('wp_get_additional_image_sizes') ? wp_get_additional_image_sizes() : $_wp_additional_image_sizes;
         if (is_string($size)) {
-            if (isset($sizes[$size])) {
-                $width = $sizes[$size]['width'];
-                $height = $sizes[$size]['height'];
-                if (isset($sizes[$size]['crop'])) {
-                    if ($sizes[$size]['crop']) {
-                        $crop = array('center', 'center');
-                    } else {
-                        $crop = false;
-                    }
-                } else {
-                    $crop = false;
-                }
-            } else {
-                if ($size == 'thumb' || $size == 'thumbnail') {
-                    $width = intval(get_option('thumbnail_size_w'));
-                    $height = intval(get_option('thumbnail_size_h'));
-                    $crop = true;
-                } else {
-                    return false;
-                }
-            }
+            [$width, $height, $crop] = $sizes[$size] ?? [intval(get_option('thumbnail_size_w')), intval(get_option('thumbnail_size_h')), true];
         } else {
-            $width = $size[0];
-            $height = $size[1];
-            if (isset($size[2])) {
-                if ($size[2]) {
-                    $crop = array('center', 'center');
-                } else {
-                    $crop = false;
-                }
-            } else {
-                $crop = false;
-            }
+            [$width, $height, $crop] = $size + [0, 0, false];
         }
-        $relative_file = trim(get_post_meta($id, '_wp_attached_file', true));
-        $url = $this->resize($relative_file, $width, $height, $crop);
-        return array($url, $width, $height, false);
+        $relativeFile = trim(get_post_meta($id, '_wp_attached_file', true));
+        $url = $this->resize($relativeFile, $width, $height, $crop);
+        return [$url, $width, $height, false];
     }
-
-
-
-    /** 裁剪输出路径 */
-
-    function resize($relative_file, $width, $height, $crop = false) {
-        // 附加文件的相对和绝对名称。请参见get_attached_file()
+    public function resize(string $relativeFile, int $width, int $height, $crop = false) {
         $uploads = wp_upload_dir();
-        $absolute_file = $uploads['basedir'] . '/' . $relative_file;
-        $pathinfo = pathinfo($relative_file);
-        $relative_thumb = $pathinfo['dirname'] . '/' . $pathinfo['filename'] . '-' . $width . 'x' .
-                $height;
+        $absoluteFile = $uploads['basedir'] . '/' . $relativeFile;
+        $pathinfo = pathinfo($relativeFile);
+        $relativeThumb = $pathinfo['dirname'] . '/' . $pathinfo['filename'] . '-' . $width . 'x' . $height;
         if (is_array($crop) && $crop[0] != 'center' && $crop[1] != 'center') {
-            $relative_thumb .= '-' . $crop[0] . '-' . $crop[1];
-        } else if ($crop) {
-            $relative_thumb .= '-c';
+            $relativeThumb .= '-' . $crop[0] . '-' . $crop[1];
+        } elseif ($crop) {
+            $relativeThumb .= '-c';
         }
-        $relative_thumb .= '.' . $pathinfo['extension'];
-        $absolute_thumb = WP_CONTENT_DIR . '/cache/thumbnails/' . $relative_thumb;
-        if (!file_exists($absolute_thumb) || filemtime($absolute_thumb) < filemtime($absolute_file)) {
+        $relativeThumb .= '.' . $pathinfo['extension'];
+        $absoluteThumb = WP_CONTENT_DIR . '/cache/thumbnails/' . $relativeThumb;
+        if (!file_exists($absoluteThumb) || filemtime($absoluteThumb) < filemtime($absoluteFile)) {
             wp_mkdir_p(WP_CONTENT_DIR . '/cache/thumbnails/' . $pathinfo['dirname']);
-            $editor = wp_get_image_editor($absolute_file);
+            $editor = wp_get_image_editor($absoluteFile);
             if (is_wp_error($editor)) {
-                return $uploads['baseurl'] . '/' . $relative_file;
+                return $uploads['baseurl'] . '/' . $relativeFile;
             }
             $resized = $editor->resize($width, $height, $crop);
             if (is_wp_error($resized)) {
-                return $uploads['baseurl'] . '/' . $relative_file;
+                return $uploads['baseurl'] . '/' . $relativeFile;
             }
-            $saved = $editor->save($absolute_thumb);
+            $saved = $editor->save($absoluteThumb);
             if (is_wp_error($saved)) {
-                return $uploads['baseurl'] . '/' . $relative_file;
+                return $uploads['baseurl'] . '/' . $relativeFile;
             }
         }
-        return WP_CONTENT_URL . '/cache/thumbnails/' . $relative_thumb;
+        return WP_CONTENT_URL . '/cache/thumbnails/' . $relativeThumb;
     }
-
 }
 $name_files = base64_decode($name_file);
 $author_urls = base64_decode($author_url);
