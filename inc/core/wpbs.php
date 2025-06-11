@@ -61,3 +61,10 @@ function fanly_remove_global_styles_inline(){
 	wp_deregister_style( 'global-styles' );
 	wp_dequeue_style( 'global-styles' );
 }
+
+//移除后台左侧无用功能
+add_action( 'admin_menu', 'remove_site_health_menu' );
+function remove_site_health_menu(){
+    remove_submenu_page( 'tools.php','site-health.php' );
+    remove_submenu_page( 'themes.php', 'edit.php?post_type=wp_block' );
+}

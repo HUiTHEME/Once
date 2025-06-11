@@ -28,28 +28,34 @@ add_filter('admin_footer_text', 'remove_footer_admin');
 //自定义wp-login.php登录页面
 function custom_login() { ?>
 <style type="text/css">
+/*login*/
 body.login{background:url(https://api.kdcc.cn/img/rand.php);background-size:cover;background-repeat:no-repeat;background-position:center center;display:flex;align-items:center;justify-content:center;}
-#login{background:rgb(255 255 255 / 74%);padding:10px 10px 20px 10px;}
-#login h1{display:none!important;}
-#login form{border:none;box-shadow:none;background:none;padding-bottom:0px;}
-#login form p{margin-bottom:5px;}
-#login form p .input{margin-top:5px;}
-#login form .forgetmenot{width:100%;}
-#login form p.submit{width:100%;margin-top:20px;}
-#login form p #wp-submit{width:100%;height:42px;background:#58b3e8;border:none;box-shadow:none;text-shadow:none;}
-#login form p.forgetmenot{display:block;padding-bottom:20px;}
-#login form .clear{display:none!important;}
-#login #nav{}
-#login #nav a{margin:0px 10px;}
-#login .message{display:none}
-#login #login_error,
-#login .success{border:none;box-shadow:none;color:#fd1616;font-weight:300;margin-bottom:0px;background:none;padding:30px 30px 0px 30px;}
-#reg_passmail{display:none}
-.language-switcher{display:none!important;}
-@media (max-width:768px){
-    body.login{background:#fff;}
-    #login{width:100%;padding:30px;margin:0px;}
-}
+body.login .screen-reader-text{display:none;}
+body.login .language-switcher{display:none;}
+body.login #login{background:#ffffff;padding:40px 30px 25px 30px;box-sizing:border-box;border-radius:5px;}
+body.login #login .wp-login-logo{display:none;}
+body.login #login form{background:none;border:none;padding:0;margin:0;box-shadow:none;}
+body.login #login form p,
+body.login #login form .user-pass-wrap{position:relative;}
+body.login #login form label{position:absolute;left:10px;top:0px;z-index:2;background:#fff;padding:0px 10px;color:#50575e;}
+body.login #login form input{background:#fff;padding:18px 20px 15px 20px;border:1px solid #ebeaea;margin:12px 0px 20px 0px;box-shadow:none;color:#50575e;font-weight:300;line-height:1;font-size:16px;}
+body.login #login form input:-webkit-autofill{background-color:transparent!important;transition:background-color 5000s ease-in-out 0s;}
+body.login #login form button.wp-hide-pw{top:20px;right:8px;z-index:3;background:#fff;}
+body.login #login form .forgetmenot{display:flex;align-items:center;margin-bottom:20px;width:100%;}
+body.login #login form .forgetmenot input{margin:0px 10px 0px 0px;}
+body.login #login form .forgetmenot label{position:relative;left:0;top:0.5px;padding:0;margin:0;line-height:1;}
+body.login #login form .submit{width:100%;display:flex;}
+body.login #login form .submit input{width:100%;background:#5856e9;border-radius:3px;margin:0;padding:15px 0px;color:#fff;font-size:14px;}
+body.login #login #nav{margin:25px 0px 15px 0px;padding:0px 5px;}
+body.login #login #backtoblog{margin:0;padding:0;}
+body.login #login .notice-info.register{display:none;}
+
+/*confirm_admin_email*/
+body.login-action-confirm_admin_email #login{margin:0;}
+body.login-action-confirm_admin_email #login form{margin-bottom:20px;}
+body.login-action-confirm_admin_email .admin-email__actions-primary{display:flex;align-items:center;gap:10px;}
+body.login-action-confirm_admin_email .admin-email__actions-primary .button{background:#5856e9!important;border-radius:3px;margin:0 !important;padding:12px 20px !important;color:#fff!important;font-size:14px!important;line-height:1!important;font-weight:300!important;border:none!important;}
+body.login-action-confirm_admin_email .admin-email__actions-secondary{display:none;}
 </style>
 <?php } add_action('login_head', 'custom_login');
 
@@ -57,18 +63,14 @@ body.login{background:url(https://api.kdcc.cn/img/rand.php);background-size:cove
 //后端CSS控制
 function my_admin_theme_style() { ?>
 <style type="text/css">
-#wp-admin-bar-wp-logo,
-#wp-admin-bar-my-account .avatar,
-#wp-admin-bar-user-actions,
-.user-comment-shortcuts-wrap,
-.user-rich-editing-wrap,
-.user-admin-bar-front-wrap,
-.user-first-name-wrap,
-.user-last-name-wrap,
-#wp-admin-bar-new-content,
-#wp-admin-bar-comments{display:none!important;}
+/*wpadminbar*/
+#wpadminbar .admin-bar-search{display:none!important;}
+#wpadminbar #wp-admin-bar-wp-logo{display:none!important;}
+#wpadminbar #wp-admin-bar-comments{display:none!important;}
+#wpadminbar #wp-admin-bar-new-content{display:none!important;}
+#wpadminbar #wp-admin-bar-archive{display:none!important;}
 
-/*zidingyi*/
+/*theme_customize_diy*/
 #customize-theme-controls .accordion-section .attachment-thumb{height:80px;}
 #customize-theme-controls .accordion-section .customize-control{padding:20px;width:calc(100% - 40px)!important;background:#fff;border-radius:8px;position:relative;}
 #customize-theme-controls .accordion-section .description{color:#acacac!important;font-size:12px;margin-bottom:10px;}
@@ -76,6 +78,17 @@ function my_admin_theme_style() { ?>
 #customize-theme-controls #accordion-panel-nav_menus,
 #customize-theme-controls #accordion-panel-widgets{display:none!important;}
 #customize-theme-controls .chosen-container.chosen-with-drop .chosen-drop{position:absolute;}
+
+/*admin widgets*/
+.widgets-php .widget-liquid-right .widget .widget-top{background:#f0f0f7;border:none;border-radius:5px;}
+.widgets-php .widget-liquid-right .widget.open{box-shadow:0px 2px 20px 10px #00000033;border-radius:10px;}
+.widgets-php .widget-liquid-right .widget.open .widget-top{background:#f1f1f1}
+.widgets-php .widget-liquid-right .widget .widget-inside{border:none;border-radius:10px;}
+.widgets-php .widget-liquid-right .widget .widget-inside .widget-control-actions{display:flex;justify-content:space-between;align-items:center;}
+.widgets-php .widget-liquid-right .widget .widget-inside{border:none;border-radius:10px;}
+.widgets-php .widget-liquid-right .widget .widget-inside .widget-control-actions{display:flex;justify-content:space-between;align-items:center;}
+.widgets-php .widget-liquid-right .widget .widget-inside .widget-control-actions .clear{display:none;}
+
 
 /*post_meta*/
 .edit-post-meta-boxes-area .csf-metabox .csf-field{padding:20px 0px!important;}

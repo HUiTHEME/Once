@@ -11,6 +11,11 @@
 		    			<span><i class="bi bi-chat-square-text"></i><?php echo get_post($post->ID)->comment_count; ?></span>
 		    		</p>
 		    	</div>
+
+				<?php if ( is_active_sidebar( 'single_top' ) ) { ?>
+				    <div class="ishows"><?php dynamic_sidebar( 'single_top' ); ?></div>
+				<?php } ?>
+
             	<div class="post_container">
 					<?php while( have_posts() ): the_post(); $p_id = get_the_ID(); ?>
 					<article class="wznrys">
@@ -36,6 +41,10 @@
 						</div>
 					</div>
 				</div>
+
+				<?php if ( is_active_sidebar( 'single_bottom' ) ) { ?>
+				    <div class="ishows mb-3"><?php dynamic_sidebar( 'single_bottom' ); ?></div>
+				<?php } ?>
 
 				<div class="next_prev_posts">
 				    <?php
@@ -124,14 +133,16 @@
 <link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/assets/highlight/atom-one-light.css">
 <script src="<?php bloginfo('template_directory'); ?>/assets/highlight/highlight.min.js"></script>
 <script src="<?php bloginfo('template_directory'); ?>/assets/highlight/highlightjs-line-numbers.min.js"></script>
+<script src="<?php bloginfo('template_directory'); ?>/assets/highlight/highlightjs-copy.min.js"></script>
 <script>
-hljs.initHighlightingOnLoad();
-$(document).ready(function() {
-    $('.wznrys pre code').each(function(i, block) {
-        hljs.lineNumbersBlock(block);
-    });
-});
+hljs.highlightAll();
+hljs.addPlugin(new CopyButtonPlugin());
+hljs.initLineNumbersOnLoad();
 </script>
+<style>
+.hljs-copy-container button{position:absolute;right:0px;top:0px;border:none;color:#ada8a8;background:none;height:36px;padding:0 10px 0 0;}
+.hljs-copy-alert{display:none}
+</style>
 <?php } ?>
 
 <?php get_footer(); ?>

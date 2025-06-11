@@ -58,6 +58,30 @@ function huitheme_widgets_init() {
         'before_title' => '<h3 class="widget-title">',
         'after_title' => '</h3>',
     ) );
+
+
+
+    register_sidebar( array(
+        'name' => '文章头部广告位',
+        'id' => 'single_top',
+        'description' => '文章头部广告位',
+        'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+        'after_widget' => '</aside>',
+        'before_title' => '<h3 class="widget-title">',
+        'after_title' => '</h3>',
+    ) );
+
+    register_sidebar( array(
+        'name' => '文章底部广告位',
+        'id' => 'single_bottom',
+        'description' => '文章底部广告位',
+        'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+        'after_widget' => '</aside>',
+        'before_title' => '<h3 class="widget-title">',
+        'after_title' => '</h3>',
+    ) );
+
+
     }
 add_action( 'widgets_init', 'huitheme_widgets_init' );
 

@@ -4,7 +4,7 @@ Theme URI: http://www.huitheme.com
 Description: Crazy uncle
 Author: Crazy uncle
 Author URI: http://www.huitheme.com
-Version: 1.6.202301041836
+Version: 1.9.20250611
 */
 @charset "UTF-8";
 body{font-family:PingFang SC,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif;color:#333;font-size:14px;background-color:#f7f7f7;background-image:var(--ds_background);background-attachment:fixed;}
@@ -19,10 +19,10 @@ textarea:focus,
 button:focus,
 input:focus{box-shadow:none;outline:0}
 img{border:0;max-width:100%;height:auto;}
-.dark::-webkit-scrollbar{width:8px;background:#222;}
-.dark::-webkit-scrollbar-thumb{background:#333;}
-::-webkit-scrollbar{width:8px;background:#ccc;}
-::-webkit-scrollbar-thumb{background:#222;}
+html::-webkit-scrollbar{width:5px;background:#fff;}
+html::-webkit-scrollbar-thumb{background:#222;}
+html.dark::-webkit-scrollbar{width:5px;background:#212121;}
+html.dark::-webkit-scrollbar-thumb{background:#333;}
 #wp-admin-bar-wp-logo{display:none!important}
 .show_m{-webkit-transition:all 0.6s ease;-o-transition:all 0.6s ease;transition:all 0.6s ease;}
 .f300{font-weight:300}
@@ -88,11 +88,16 @@ img{border:0;max-width:100%;height:auto;}
 .dark .wznrys .wp-block-table table{color:#fff;}
 .dark .widget-title{color:#fff;}
 .dark .widget-title:after{background:#212121;}
+.dark .ishows .widget{border-bottom:1px solid #212121}
 .dark .post_container_title h1{color:#fff;}
 .dark .wznrys{font-size:15px;color:#c9c9c9;}
 .dark .post_related_list a{color:#c9c9c9;}
 .dark .author_show_box{background:#2a2a2b;}
 .dark .author_post{border-top:1px solid #2d2d2d;}
+.dark .wznrys pre.wp-block-code{background:#363636;border:1px solid #363636;}
+.dark .wznrys pre.wp-block-code .hljs{background:#232323;color:#d3d3d3;}
+.dark .wznrys pre.wp-block-code code::-webkit-scrollbar{background:#363636;}
+.dark .wznrys pre.wp-block-code code::-webkit-scrollbar-thumb{background:#2a2a2b;}
 .header{background:#fff;width:100%;z-index:10;padding:16px 0px;margin-bottom:1.5rem;box-shadow:0px 1px 20px 12px #0808080f;}
 .top{display:flex;justify-content:space-between;align-items:center;}
 .top .top_l{display:flex;align-items:center;}
@@ -100,8 +105,8 @@ img{border:0;max-width:100%;height:auto;}
 .top .top_l .logo a{display:flex;align-items:center;}
 .top .top_l .logo a img{height:30px;margin-right:10px;}
 .top .top_l .logo a b{letter-spacing:0.5px;}
-.top .top_r{}
-.top .top_r .top_r_an{border:none;color:#555;background:none;width:30px;height:30px;border-radius:50%;display:inline-block;text-align:center;line-height:30px;padding:0;cursor:pointer;}
+.top .top_r{display:flex;}
+.top .top_r .top_r_an{border:none;color:#555;background:none;width:30px;height:30px;border-radius:50%;text-align:center;line-height:30px;padding:0;cursor:pointer;}
 .top .top_r .top_r_an.theme-switch{background:#e9e9e9;}
 .top .top_r .top_r_an:hover{background:#e9e9e9;}
 .top .top_r .top_r_an i{}
@@ -217,7 +222,7 @@ img{border:0;max-width:100%;height:auto;}
 .post_info .post_info_l span{margin-right:20px;}
 .post_info .post_info_l span i{margin-right:6px;}
 .post_info .post_info_l span a{color:#888;}
-.post_info .post_info_r{}
+.post_info .post_info_r{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right;}
 .post_info .post_info_r em{font-style:inherit;margin-left:12px;color:#888;}
 .post_info .post_info_r em a{margin-left:3px;color:#888;}
 .post_gallery{background:#fff;padding:20px;margin-bottom:20px;}
@@ -368,16 +373,16 @@ img{border:0;max-width:100%;height:auto;}
 .post_container{background:#fff;padding:30px 32px 20px 32px;border-radius:0px 0px 4px 4px;}
 .post_comment{border-radius:4px;overflow:hidden;}
 .post_author{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding:20px 30px;background:#fff;border-top:3px solid #f7f7f7;border-radius:0px 0px 4px 4px;}
-.post_author_l{display:flex;align-items:center;}
+.post_author_l{display:flex;align-items:center;flex-shrink:0;margin-right:20px;}
 .post_author_l img{border-radius:50%;margin-right:15px;width:28px;height:28px;}
 .post_author_l span{}
-.post_author_r{display:flex;align-items:center;}
-.post_author_r .post_author_tag{}
+.post_author_r{display:flex;align-items:center;overflow:hidden;}
+.post_author_r .post_author_tag{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .post_author_r .post_author_tag em{background:#f7f7f7;padding:4px 8px;margin:0px 4px;font-style:inherit;border-radius:4px;font-size:12px;display:inline-block;}
 .post_author_r .post_author_tag em i{margin-right:2px;}
 .post_author_r .post_author_tag em:hover{background:#24b581;color:#fff;}
 .post_author_r .post_author_tag em:hover a{color:#fff;}
-.post_author_icon{margin-left:15px;}
+.post_author_icon{margin-left:15px;flex-shrink:0;}
 .post_author_icon a{background:#4270f5;padding:4px 8px;margin:0px 4px;font-style:inherit;border-radius:4px;color:#fff;font-size:12px;display:inline-block;}
 .post_author_icon a:hover{}
 .post_author_icon a i{margin-right:3px;}
@@ -422,6 +427,7 @@ img{border:0;max-width:100%;height:auto;}
 .wznrys hr:after{content:"";width:100%;height:1px;background-color:#e2e2e2;position:absolute;top:10px;z-index:1;}
 .wznrys hr:before{content:"";position:absolute;width:8px;height:8px;background-color:#ababab;left:50%;top:50%;transform:rotate(45deg);z-index:2;margin-top:-4px;margin-left:-4px;}
 .wznrys .post-image{padding-bottom:20px}
+.wznrys .is-layout-flex{display:flex;}
 .wznrys p{line-height:2;padding-bottom:20px;margin-bottom:0;margin-top:0;}
 .wznrys h1,
 .wznrys h2,
@@ -455,9 +461,10 @@ img{border:0;max-width:100%;height:auto;}
 .wznrys .crayon-table tr:nth-child(odd){background:none;}
 
 /* code */
-.wznrys pre.wp-block-code{margin:20px 0px 30px 0px;position:relative;background:#4270f5;padding-top:36px;border-radius:5px;border:1px solid #efefef;}
+.wznrys pre.wp-block-code{margin:20px 0px 30px 0px;position:relative;background:#efefef;padding-top:36px;border-radius:5px;border:1px solid #efefef;}
 .wznrys pre.wp-block-code code{font-size:13px;line-height:1.8;padding:15px 20px;}
-.wznrys pre.wp-block-code code:before{content:attr(class);position:absolute;top:6px;right:20px;color:#7e7cfe;text-transform:uppercase;}
+.wznrys pre.wp-block-code code::-webkit-scrollbar{width:5px;background:#f0f0f0;height:5px;}
+.wznrys pre.wp-block-code code::-webkit-scrollbar-thumb{background:#4270f5;}
 .wznrys pre.wp-block-code code table{border:none;line-height:1.8;margin:0;width:100%;}
 .wznrys pre.wp-block-code code table tr{}
 .wznrys pre.wp-block-code code table tr:nth-child(odd){background:none;}
@@ -468,13 +475,13 @@ img{border:0;max-width:100%;height:auto;}
 .wznrys pre.wp-block-code code table tr td.hljs-ln-code{border-left:1px solid #eaeaea;padding-left:20px;}
 .wznrys pre.wp-block-code code table tr td{border:none;text-align:inherit;line-height:inherit;}
 .wznrys pre.wp-block-code:before{content:"";position:absolute;border-radius:50%;background:#fc625d;width:12px;height:12px;left:14px;top:12px;box-shadow:20px 0 #fdbc40,40px 0 #35cd4b;z-index:2;}
-.dark .wznrys pre.wp-block-code{background:#363636;border:1px solid #363636;}
 .wznrys .wp-block-image{margin-bottom:30px;}
 .wznrys .wp-block-image figure{}
 .wznrys .wp-block-image figure img{}
 .wznrys .wp-block-image figure.aligncenter{}
 .wznrys .wp-block-image figure.aligncenter img{display:block;margin:auto;}
 .wznrys figure{border:none!important;}
+.wznrys figure.wp-block-video video{width:100%;}
 .wznrys figcaption{font-size:12px;font-weight:300;margin:15px 0px!important;text-align:center;}
 .wznrys .wp-block-gallery figcaption{margin:0!important;}
 .wznrys .wp-block-table{}
@@ -500,3 +507,8 @@ img{border:0;max-width:100%;height:auto;}
 }
 .nopic_des{position:fixed;width:100%;height:100%;background:#ffffff;top:0px;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;font-size:20px;text-align:center;line-height:2;}
 .nopic_des a{background:#3556f3;margin-top:20px;padding:8px 45px;font-size:16px;color:#fff;}
+.ishows{}
+.ishows .widget{margin:0;padding:0 0 20px 0;border-radius:0;border-bottom:1px solid #f7f7f7;}
+.ishows .widget .widget-title{padding: 15px 20px 15px 50px;margin-bottom:20px;}
+.ishows .widget .widget-title:before{top:20px;left: 30px;}
+.ishows .widget .widget-title:after{bottom:0;}
